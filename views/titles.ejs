@@ -1,0 +1,16 @@
+<html>
+<head></head>
+<body>
+	<% if(titles.length > 0) { %>
+		<h1> Following are the titles of given websites: </h1>
+
+		<ul>
+		<% titles.forEach(function(title) { %>
+			<li><%= title.address %> - "<%= title.title %>"</li>
+		<% }); %>
+		</ul>
+	<% } else { %>
+		<h1> No web address was provided!! </h1>
+	<% } %>
+</body>
+</html>
