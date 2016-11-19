@@ -13,7 +13,7 @@ app.get('/I/want/Title/', function (req, res) {
 	var addresses = [];
 	var promises = [];
 
-	if(req.query.address){
+	if(typeof req.query.address !== 'undefined'){
 		if(typeof req.query.address ==='string'){
 			addresses.push(req.query.address);
 		}		
@@ -24,17 +24,21 @@ app.get('/I/want/Title/', function (req, res) {
 		addresses.forEach(function(address) {
 			promises.push(
 				new RSVP.Promise(function(resolve, reject){
-					request(normalizeUrl(address),function(error, responce, body) {
+					if(address) address = normalizeUrl(address);
+
+					request(address?normalizeUrl(address):address,function(error, responce, body) {
 						var title;
 						if(error){
-							title = 'Error:' + error.message;
+							console.log('Error:' + error.message);
+							title = "NO RESPONSE";
 						}
 						else if (responce.statusCode !== 200) {
-							title = 'Invalid Status Code Returned:' + responce.statusCode;
+							console.log('Invalid Status Code Returned:' + responce.statusCode);
+							title = "NO RESPONSE";
 						}
 						else{
 							var $ = cheerio.load(body);
-							title = $("title").html();
+							title = '"'+$("title").text()+'"';
 						}
 
 						resolve({address:address,title:title});
@@ -57,7 +61,7 @@ app.all('*', function(req, res){
 	res.render('404');
 });
 
-app.listen(3002, function () {
-	console.log('Example app listening on port 3002!');
+app.listen(3000, function () {
+	console.log('Example app listening on port 3000!');
 });
 	
