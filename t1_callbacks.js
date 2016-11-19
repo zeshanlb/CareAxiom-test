@@ -2,7 +2,6 @@ var express = require('express');
 var request = require('request');
 var cheerio = require('cheerio');
 var normalizeUrl = require('normalize-url');
-var util = require('util');
  
 var app = express();
 
